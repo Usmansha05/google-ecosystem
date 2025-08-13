@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Ecosystem for Students | Beyond Docs: Creative Tech for Big Ideas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #EA4335;
+            --google-yellow: #FBBC04;
+            --google-green: #34A853;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 50%, var(--google-blue) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--google-red) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, var(--google-green) 0%, transparent 50%),
+                        radial-gradient(circle at 60% 60%, var(--google-yellow) 0%, transparent 50%);
+            opacity: 0.1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Floating Google Icons */
+        .floating-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-icon {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: floatGentle 8s ease-in-out infinite;
+            transition: all 0.3s ease;
+            background: var(--glass-bg);
+        }
+
+        .floating-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(-1deg); }
+            75% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .google-logo {
+            background: linear-gradient(45deg, var(--google-blue), var(--google-red), var(--google-yellow), var(--google-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--google-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            padding: 0 3rem;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--google-blue), var(--google-red), var(--google-yellow), var(--google-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--google-blue), #1a73e8);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(66, 133, 244, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(66, 133, 244, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2.5rem;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 8rem 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--google-blue), var(--google-red), var(--google-yellow), var(--google-green));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .product-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .product-icon img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .product-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .product-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--google-green);
+            font-weight: bold;
+        }
+
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--google-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .product-link:hover {
+            color: #1a73e8;
+            transform: translateX(5px);
+        }
+
+        .product-link::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .product-link:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--google-blue), var(--google-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--google-blue), var(--google-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--google-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 3.5rem; }
+            .section-title { font-size: 3rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 1rem 2rem; }
+            .hero, .section { padding: 4rem 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2.5rem; }
+            .cta-group { flex-direction: column; align-items: center; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Dynamic Background -->
+    <div class="dynamic-bg"></div>
+
+    <!-- Floating Google Icons -->
+    <div class="floating-container">
+  <div class="floating-icon" style="top: 15%; left: 10%; animation-delay: 0s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Docs_2020_Logo.svg" alt="Docs" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 25%; right: 15%; animation-delay: 1.5s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Sheets_2020_Logo.svg" alt="Sheets" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 60%; left: 8%; animation-delay: 3s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Slides_2020_Logo.svg" alt="Slides" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 35%; right: 12%; animation-delay: 4.5s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Drive_icon_(2020).svg" alt="Drive" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 70%; right: 25%; animation-delay: 6s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gmail_icon_(2020).svg" alt="Gmail" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 20%; left: 75%; animation-delay: 2s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Meet_icon_(2020).svg" alt="Meet" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 80%; left: 20%; animation-delay: 5s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Classroom_Logo.svg" alt="Classroom" loading="lazy">
+  </div>
+  <div class="floating-icon" style="top: 45%; left: 85%; animation-delay: 7s;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Colaboratory_SVG_Logo.svg" alt="Colab" loading="lazy">
+  </div>
+</div>
+
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <span class="google-logo">Google</span> Ecosystem
+            </div>
+            <div class="nav-links">
+                <a href="#products">Products</a>
+                <a href="#stats">Impact</a>
+                <a href="https://edu.google.com" target="_blank">Education</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✨ Beyond Docs: Creative Tech for Big Ideas</div>
+            <h1>Transform Ideas Into Impact</h1>
+            <p>From messy data to clear insights. From scattered thoughts to compelling narratives. Google's integrated ecosystem empowers students to think bigger, collaborate smarter, and create without limits.</p>
+            <div class="cta-group">
+                <a href="#products" class="btn-primary">Explore Ecosystem</a>
+                <a href="https://edu.google.com/" class="btn-secondary" target="_blank">Get Started Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">🚀 Complete Toolkit</div>
+                <h2 class="section-title">Professional-Grade Tools for Students</h2>
+                <p class="section-subtitle">Every tool you need to excel academically, collaborate effectively, and showcase your work professionally.</p>
+            </div>
+
+            <div class="products-grid">
+                <!-- Google Docs -->
+                <div class="product-card fade-in stagger-1">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Docs_2020_Logo.svg" alt="Google Docs">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Docs</h3>
+                            <div class="product-category">Document Creation</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Professional document creation with real-time collaboration, smart editing suggestions, and seamless integration across devices.</p>
+                    <ul class="product-features">
+                        <li>Real-time collaborative editing</li>
+                        <li>AI-powered writing assistance</li>
+                        <li>Professional templates & formatting</li>
+                        <li>Version history & track changes</li>
+                    </ul>
+                    <a href="https://docs.google.com" class="product-link" target="_blank">Create Documents</a>
+                </div>
+
+                <!-- Google Sheets -->
+                <div class="product-card fade-in stagger-2">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Sheets_2020_Logo.svg" alt="Google Sheets">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Sheets</h3>
+                            <div class="product-category">Data Analysis</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Transform raw data into actionable insights with powerful formulas, dynamic charts, and collaborative analysis tools.</p>
+                    <ul class="product-features">
+                        <li>Advanced formulas & functions</li>
+                        <li>Interactive charts & visualizations</li>
+                        <li>Data validation & pivot tables</li>
+                        <li>API integrations & automation</li>
+                    </ul>
+                    <a href="https://sheets.google.com" class="product-link" target="_blank">Analyze Data</a>
+                </div>
+
+                <!-- Google Slides -->
+                <div class="product-card fade-in stagger-3">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Slides_2020_Logo.svg" alt="Google Slides">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Slides</h3>
+                            <div class="product-category">Presentations</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Create compelling presentations with professional templates, smooth animations, and collaborative design features.</p>
+                    <ul class="product-features">
+                        <li>Professional design templates</li>
+                        <li>Smooth transitions & animations</li>
+                        <li>Presenter tools & speaker notes</li>
+                        <li>Embedded media & interactive elements</li>
+                    </ul>
+                    <a href="https://slides.google.com" class="product-link" target="_blank">Create Presentations</a>
+                </div>
+
+                <!-- Google Drive -->
+                <div class="product-card fade-in stagger-4">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Drive_icon_(2020).svg" alt="Google Drive">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Drive</h3>
+                            <div class="product-category">Cloud Storage</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Secure cloud storage with intelligent organization, powerful search, and seamless file sharing across all platforms.</p>
+                    <ul class="product-features">
+                        <li>15GB free storage</li>
+                        <li>Advanced search & AI organization</li>
+                        <li>Granular sharing permissions</li>
+                        <li>Offline access & sync</li>
+                    </ul>
+                    <a href="https://drive.google.com" class="product-link" target="_blank">Store & Share</a>
+                </div>
+
+                <!-- Google Colab -->
+                <div class="product-card fade-in stagger-1">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://colab.research.google.com/img/colab_favicon_256px.png" alt="Google Colab">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Colab</h3>
+                            <div class="product-category">Data Science</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Free Jupyter notebook environment with GPU/TPU support for machine learning, data science, and Python development.</p>
+                    <ul class="product-features">
+                        <li>Free GPU/TPU access</li>
+                        <li>Pre-installed ML libraries</li>
+                        <li>Collaborative notebooks</li>
+                        <li>GitHub integration</li>
+                    </ul>
+                    <a href="https://colab.research.google.com" class="product-link" target="_blank">Start Coding</a>
+                </div>
+
+                <!-- Google Meet -->
+                <div class="product-card fade-in stagger-2">
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Google_Meet_icon_(2020).svg" alt="Google Meet">
+                        </div>
+                        <div class="product-info">
+                            <h3>Google Meet</h3>
+                            <div class="product-category">Video Conferencing</div>
+                        </div>
+                    </div>
+                    <p class="product-description">Enterprise-grade video conferencing with crystal-clear audio, screen sharing, and seamless calendar integration.</p>
+                    <ul class="product-features">
+                        <li>HD video & noise cancellation</li>
+                        <li>Screen sharing & recording</li>
+                        <li>Breakout rooms & polls</li>
+                        <li>Calendar & Gmail integration</li>
+                    </ul>
+                    <a href="https://meet.google.com" class="product-link" target="_blank">Join Meetings</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">📊 Global Impact</div>
+                <h2 class="section-title">Empowering Students Worldwide</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">3B+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">190+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">170M+</div>
+                    <div class="stat-label">Students & Educators</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Google for Education</h3>
+                    <p>Transforming education through technology. Empowering students, educators, and institutions to achieve more together.</p>
+                    <div style="margin-top: 1rem;">
+                        <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                            🚀 Meet the creator of this website • 
+                            <a href="https://www.linkedin.com/in/usman-shariff0514" style="color: var(--google-blue); text-decoration: none;" target="_blank">Linkedin →</a>
+                            </span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <a href="https://docs.google.com" target="_blank">Google Docs</a>
+                    <a href="https://sheets.google.com" target="_blank">Google Sheets</a>
+                    <a href="https://slides.google.com" target="_blank">Google Slides</a>
+                    <a href="https://drive.google.com" target="_blank">Google Drive</a>
+                    <a href="https://colab.research.google.com" target="_blank">Google Colab</a>
+                    <a href="https://meet.google.com" target="_blank">Google Meet</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Education</h4>
+                    <a href="https://edu.google.com" target="_blank">Google for Education</a>
+                    <a href="https://classroom.google.com" target="_blank">Google Classroom</a>
+                    <a href="https://workspace.google.com/for-education/" target="_blank">Workspace for Education</a>
+                    <a href="https://skillshop.exceedlms.com/student/catalog/list?category_ids=53-google-workspace" target="_blank">Training & Certification</a>
+                    <a href="https://teachercenter.withgoogle.com/" target="_blank">Teacher Center</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="https://support.google.com/docs/" target="_blank">Help Center</a>
+                    <a href="https://developers.google.com/workspace" target="_blank">Developer Resources</a>
+                    <a href="https://blog.google/products/workspace/" target="_blank">Workspace Blog</a>
+                    <a href="https://cloud.google.com/security/" target="_blank">Security & Privacy</a>
+                    <a href="https://workspace.google.com/terms/" target="_blank">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Google LLC. All rights reserved. • Made with ❤️ for students worldwide by Shariff Usman • 
+                <a href="https://policies.google.com/privacy" style="color: var(--google-blue); text-decoration: none;">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+            } else {
+                header.style.background = 'var(--glass-bg)';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Dynamic floating icons positioning
+        function randomizeFloatingIcons() {
+            const icons = document.querySelectorAll('.floating-icon');
+            icons.forEach((icon, index) => {
+                const delay = Math.random() * 8;
+                const duration = 8 + Math.random() * 4;
+                icon.style.animationDelay = `${delay}s`;
+                icon.style.animationDuration = `${duration}s`;
+            });
+        }
+
+        // Initialize dynamic effects
+        randomizeFloatingIcons();
+
+        // Add hover effects to product cards
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) rotateX(5deg)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0)';
+            });
+        });
+
+        // Stats counter animation
+        function animateCounter(element, target) {
+            const duration = 2000;
+            const start = 0;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.floor(progress * target);
+                
+                if (target >= 1000000000) {
+                    element.textContent = (current / 1000000000).toFixed(1) + 'B+';
+                } else if (target >= 1000000) {
+                    element.textContent = (current / 1000000).toFixed(0) + 'M+';
+                } else if (target >= 1000) {
+                    element.textContent = (current / 1000).toFixed(0) + 'K+';
+                } else if (target < 1) {
+                    element.textContent = (current * 100).toFixed(1) + '%';
+                } else {
+                    element.textContent = current + '+';
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        }
+
+        // Animate stats when they come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const number = entry.target.querySelector('.stat-number');
+                    const text = number.textContent;
+                    let target;
+
+                    if (text.includes('3B+')) target = 3000000000;
+                    else if (text.includes('190+')) target = 190;
+                    else if (text.includes('170M+')) target = 170000000;
+                    else if (text.includes('99.9%')) target = 0.999;
+
+                    animateCounter(number, target);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-item').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // Performance optimization: Reduce animations on low-end devices
+        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+            document.documentElement.style.setProperty('--reduced-motion', '1');
+        }
+    </script>
+</body>
+</html>
